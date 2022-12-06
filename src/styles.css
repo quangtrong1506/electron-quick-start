@@ -1,0 +1,431 @@
+/* Font - main */
+@font-face {
+    font-family: 'patrick hand';
+    src: url('./fonts/PatrickHand-Regular.ttf');
+}
+/* width */
+::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+input[type='button'] {
+    cursor: pointer;
+    min-width: 60px;
+}
+input[type='color'] {
+    min-width: 80px;
+    padding: 0;
+    outline: none;
+}
+
+body {
+    margin: 0 auto;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'patrick hand';
+    user-select: none;
+}
+#background {
+    position: fixed;
+    z-index: 1;
+}
+#background .background-view {
+    width: 100vw;
+    height: 100vh;
+    background-position: center;
+    background-clip: border-box;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.text {
+    white-space: nowrap;
+}
+.main .ab.text {
+    position: absolute;
+    z-index: 10;
+    cursor: default;
+    user-select: none;
+}
+.linear-gradient {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.mouse-right-when-click {
+    position: absolute;
+    padding: 5px;
+    background-color: white;
+    z-index: 100;
+    user-select: none;
+    border-radius: 10px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+.mouse-right-when-click ul {
+    padding: 0;
+    margin: 0;
+    font-family: 'patrick hand', sans-serif;
+}
+.mouse-right-when-click ul li {
+    list-style: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-top: 1px solid rgb(228, 228, 228);
+}
+.mouse-right-when-click ul li:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.mouse-right-when-click ul li:first-child {
+    border-top: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-align: center;
+    font-weight: 400;
+}
+select {
+    font-family: 'Patrick Hand', sans-serif;
+    font-size: 18px;
+}
+.edit-container {
+    position: absolute;
+    z-index: 5;
+    width: 80%;
+    margin: 10px auto;
+    left: 0;
+    right: 0;
+    /* background-color: rgba(255, 255, 255, 0.2); */
+    border-radius: 10px;
+}
+.edit-container .content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.edit-container .content-1,
+.edit-container .content-2,
+.edit-container .content-3 {
+    min-height: 100px;
+}
+.edit-container .content-1 {
+    width: 20%;
+}
+.edit-container .content-1 ul {
+    padding: 0;
+    margin: 5px;
+}
+.edit-container .content-1 ul li {
+    padding: 5px;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 18px;
+    background-color: rgb(196, 255, 235);
+    margin: 5px 0;
+    border-radius: 2px;
+    min-width: calc(50% - 15px);
+    text-align: center;
+}
+.edit-container .content-1 ul li:hover {
+    box-shadow: 0 0 2px black;
+}
+.edit-container .content-2 {
+    width: 80%;
+}
+.edit-container .content-2 .tab {
+    margin-left: 50px;
+}
+.edit-container .content-2 label {
+    display: inline-block;
+    min-width: 100px;
+    margin: 0 3px;
+}
+.edit-container .content-2 input,
+.edit-container .content-2s select {
+    font-size: 18px;
+    font-family: 'Patrick Hand';
+    border-width: 1px;
+    outline: none;
+    margin-bottom: 5px;
+}
+input:focus-visible,
+select:focus-visible {
+    border-width: 1px;
+    outline: none;
+}
+.edit-container .content-3 {
+    width: 100%;
+    text-align: center;
+}
+.edit-container .content-3 .demo {
+    margin: 0 auto;
+    overflow: auto;
+    height: 300px;
+    padding: 30px 20px;
+    display: flex;
+    width: 90%;
+    max-width: 90%;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.edit-container .content-2 .tab-2 .single {
+    display: inline-block;
+}
+.edit-container .content-2 .tab-2 label {
+    min-width: 60px;
+    margin-top: 10px;
+}
+.edit-container .content-2 .tab-4 label {
+    min-width: 20px;
+    width: 20px;
+    margin-top: 10px;
+    text-align: center;
+}
+.edit-container .content-2 .tab-4 input[type='number'] {
+    min-width: 60px;
+    width: 60px;
+}
+
+.message {
+    position: fixed;
+    right: 30px;
+    bottom: 50px;
+    z-index: 1000;
+    font-family: 'Patrick hand';
+}
+.message .message__container {
+    padding: 5px;
+    padding-left: 12px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    min-width: 280px;
+    max-width: 300px;
+    position: relative;
+    transform: translateX(calc(100% + 50px));
+    background-color: white;
+    margin: 5px;
+    animation: slide-left 0.1s linear both;
+}
+.message .message__container .title {
+    border-bottom: 1px solid rgb(188, 188, 188);
+    padding-bottom: 5px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.message .message__container .mes {
+    padding: 8px;
+    padding-left: 0;
+    min-height: 40px;
+}
+.message .message__container .close-btn {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+.message .message__container .bottom-time {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: rgb(107, 248, 255);
+    width: 100%;
+    animation: timeDown 3.5s linear both;
+}
+@keyframes timeDown {
+    form {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
+}
+
+@keyframes slide-left {
+    to {
+        transform: translateX(0);
+    }
+}
+.list-skin {
+    position: absolute;
+    z-index: 5;
+    width: 80%;
+    margin: 10px auto;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    min-height: 96vh;
+}
+
+.list-skin > div {
+    width: 99%;
+    margin: 7px auto;
+    max-height: 92vh;
+}
+.list-skin > div .container {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.list-skin > div .header {
+    display: flex;
+    min-height: 50px;
+    width: 96%;
+    margin: 0 auto;
+    /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-skin > div .header .start {
+    line-height: 50px;
+    font-size: 30px;
+}
+.list-skin > div .header .end {
+    line-height: 50px;
+    color: #00b6a4;
+    position: relative;
+}
+.list-skin > div .header .end span {
+    cursor: pointer;
+    display: inline-block;
+}
+.list-skin > div .header .end span:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.list-skin > div .header .end ul {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+    border-radius: 3px;
+    margin: 0 auto;
+    left: 0;
+    z-index: 101;
+    padding: 5px 7px;
+}
+
+.list-skin > div .header .end ul li {
+    list-style: none;
+    color: black;
+    white-space: nowrap;
+    line-height: 30px;
+    cursor: pointer;
+    border-top: 1px solid rgb(198, 198, 198);
+    padding: 0 7px;
+}
+.list-skin > div .header .end ul li:first-child {
+    border-top: none;
+}
+.list-skin > div .header .end ul li:hover {
+    background-color: #f1f1f1;
+}
+
+.list-skin .container .element {
+    display: flex;
+    min-height: 100px;
+    align-items: center;
+    width: 90%;
+    margin: 5px auto;
+    background-color: #f7fffa;
+    padding: 0 30px;
+}
+.list-skin .container .element:first-child {
+    margin-top: 2px;
+}
+.list-skin .container .element .start {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+.list-skin .container .element .start .name {
+    font-size: 30px;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+}
+.list-skin .container .element .start .name:hover {
+    /* text-decoration: underline; */
+    color: #00b6a4;
+}
+.list-skin .container .element .start .time {
+    position: relative;
+    font-size: 14px;
+    margin-top: 10px;
+    color: #888;
+}
+.list-skin .container .element .start .time > div {
+    position: absolute;
+    display: flex;
+}
+.list-skin .container .element .start .time > div .created-at {
+    margin-right: 15px;
+}
+
+.list-skin .container .element .end {
+    display: flex;
+}
+.list-skin .container .element .end .group-btn {
+    display: flex;
+}
+.list-skin .container .element .end .group-btn > div {
+    margin: 0 10px;
+}
+.list-skin .container .element .end .group-btn i {
+    cursor: pointer;
+}
+.tooltip {
+    position: relative;
+    width: auto;
+    text-align: center;
+}
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    z-index: 999;
+    top: 45px;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    /* -webkit-transform: translate(-50%, -50%); */
+    background: rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    display: none;
+    min-width: 60px;
+}
+.tooltip:hover::after {
+    display: inline-block;
+}

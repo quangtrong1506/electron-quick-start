@@ -1,19 +1,194 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
-    <link href="./styles.css" rel="stylesheet">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+<html lang="vi">
 
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./src/styles.css">
+  <link rel="stylesheet" href="./src/fontawesome-free-6.2.0-web/css/all.min.css">
+</head>
+
+<body>
+  <div class="main" id="main">
+    <div id="background" data-type="0" class="background">
+      <div class="background-view" style="display: none; background-image: url('./src/images/demo.jpg');"></div>
+      <div class="background-view" style="display: none">
+        <video src="./src/video/xue-hu-sang-virtual-youtuber-preview.mp4" autoplay loop width="100%" muted></video>
+      </div>
+      <div class="background-view" style="display: none; background-color: black;"></div>
+    </div>
+
+    <div class="text-container"></div>
+    <div class="edit-container" style="display: none;">
+      <h1>Chỉnh sửa văn bản hiển thị</h1>
+      <div class="content">
+        <div class="content-1">
+          <ul>
+            <li onclick="changeTab(0)">Văn bản</li>
+            <li onclick="changeTab(1)">Màu sắc</li>
+            <li onclick="changeTab(2)">Nền & Viền</li>
+            <li onclick="changeTab(3)">Vị trí</li>
+            <li onclick="xoaBtn()">Xóa</li>
+            <li onclick="saveBtn2()">Lưu</li>
+            <li onclick="viewBlock(0)">Hủy</li>
+          </ul>
+        </div>
+        <div class="content-2">
+          <div class="tab">
+            <div class="tab-1" style="display: none;">
+              <label>Văn bản hiển thị</label>
+              <input type="text" name="text" class="text-input" id="text-input" spellcheck="false" autocomplete="off"
+                style="width: 80%;" oninput="onchangeValueTab1()" placeholder="Hãy nhập gì đó">
+              <br>
+              <label>Cỡ chữ</label>
+              <input type="number" id="size-input" class="size-input" min="10" max="300" value="18"
+                oninput="onchangeValueTab1()">
+              <label style="text-align: right;">Font chữ</label>
+              <select class="select-font font-input" oninput="onchangeValueTab1()"></select>
+              <label style="min-width: 60px; text-align: right;" for="bold">In đậm</label>
+              <input id="bold" type="checkbox" onchange="onchangeValueTab1()">
+              <label style="min-width: 60px; text-align: right;" for="i">In nghiêng</label>
+              <input id="i" type="checkbox" onchange="onchangeValueTab1()">
+            </div>
+            <div class="tab-2" style="display: none;">
+              <label>Màu chữ</label>
+              <select onchange="changeTypeColor(event)">
+                <option value="0">Đơn màu</option>
+                <option value="1">Nhiều màu</option>
+              </select>
+              <div class="single">
+                <label>Chọn màu</label>
+                <input type="color" class="color-input" oninput="changeColor()">
+                <label style="text-align: center;">Hoặc</label>
+                <input type="button" value="Màu ngẫu nhiên" onclick="randomColorBtn()">
+              </div>
+              <div class="multi" style="display:none ;">
+                <label>Loại màu</label>
+                <select onchange="changeTypeColor(event)">
+                  <option value="1">Dải màu</option>
+                  <option value="2">Nhiều màu (Random)</option>
+                </select>
+                <div class="multi-select" style="display: block;">
+                  <div class="colorx4">
+                    <label>Màu sắc</label>
+                    <input type="color" oninput="change4Color()">
+                    <input type="color" oninput="change4Color()">
+                    <input type="color" oninput="change4Color()">
+                    <input type="color" oninput="change4Color()">
+                  </div>
+                  <label>Hướng màu</label>
+                  <select oninput="changeDeg4Color()">
+                    <optgroup label="Cơ bản">
+                      <option value="top">Từ trên xuống dưới</option>
+                      <option value="bottom">Từ dưới lên trên</option>
+                      <option value="left" selected>Từ trái sang phải</option>
+                      <option value="right">Từ phải sang trái</option>
+                    </optgroup>
+                    <optgroup label="Theo góc">
+                      <option value="0deg">0°</option>
+                      <option value="15deg">15°</option>
+                      <option value="30deg">30°</option>
+                      <option value="45deg">45°</option>
+                      <option value="60deg">60°</option>
+                      <option value="75deg">75°</option>
+                      <option value="90deg">90°</option>
+                      <option value="115deg">115°</option>
+                      <option value="120deg">120°</option>
+                      <option value="135deg">135°</option>
+                      <option value="150deg">150°</option>
+                      <option value="165deg">165°</option>
+                      <option value="180deg">180°</option>
+                      <option value="195deg">195°</option>
+                      <option value="210deg">210°</option>
+                      <option value="225deg">225°</option>
+                      <option value="240deg">240°</option>
+                      <option value="255deg">255°</option>
+                      <option value="270deg">270°</option>
+                      <option value="285deg">285°</option>
+                      <option value="300deg">300°</option>
+                      <option value="315deg">315°</option>
+                      <option value="330deg">330°</option>
+                      <option value="345deg">345°</option>
+                      <option value="360deg">360°</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="tab-3" style="display: none;">
+              <label style="text-align: left;">Chọn màu nền</label>
+              <input class="color-input" type="color" value="#ffffff" oninput="changeColorBackgroundText()">
+              <label style="text-align: center;">Hoặc</label>
+              <input type="button" value="Màu ngẫu nhiên" onclick="randomColorBackgroundText()">
+
+              <label style="text-align: center;">Độ trong suốt</label>
+              <input class="opacity-input" type="range" min="0" max="100" value="0"
+                oninput="changeOpacityBackgroundText()">
+              <span class="present-output">-</span>
+              <br>
+              <label>Màu viền</label>
+              <input type="color" class="border-color-input" oninput="changeBorderColorText()">
+              <label style="text-align: center;">Hoặc</label>
+              <input type="button" value="Màu ngẫu nhiên" onclick="changeBorderColorTextRandomBtn()">
+              <label style="text-align: center;">Độ dày</label>
+              <input class="border-width-input" type="range" min="0" max="50" value="0"
+                oninput="changeBorderWidthText()">
+              <span class="present-output-4">-</span>
+              <br>
+              <label>Padding</label>
+              <input class="padding-input" type="range" min="0" max="100" value="0"
+                oninput="changePaddingBackgroundText()">
+              <span class="present-output-2" style="display:inline-block ; width: 26px;">-</span>
+              <label style="text-align: right; width: 80px;">Làm tròn góc</label>
+              <input class="radius-input" type="range" min="0" max="200" value="0"
+                oninput="changeBorderRadiusBackgroundText()">
+              <span class="present-output-3">-</span>
+            </div>
+            <div class="tab-4" style="display: block;">
+              <div class="pos-input">
+                <label>X</label>
+                <input type="number" class="x-input" value="0" min="-50" max="1300">
+                <label>Y</label>
+                <input type="number" class="y-input" value="0" min="-50" max="600">
+                <input type="button" value="Ẩn" onclick="statusBtn(event)">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-3">
+          <div class="demo">
+            <div class="demo__text "></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-skin" style="display: none;">
+      <div>
+        <div class="header">
+          <div class="start">
+            <span> Danh sách các skin</span>
+          </div>
+          <div class="end">
+            <div class="group-btn">
+              <span class="new-skin">Thêm mới</span>
+              <span style="margin-left: 10px;color: red;" onclick="viewBlock(0)">Thoát</span>
+            </div>
+            <ul style="display: none;">
+              <li onclick="remoteEditText()">Chữ nghệ thuật</li>
+              <li>Hệ thống sẵn có</li>
+            </ul>
+          </div>
+        </div>
+        <div class="container">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="message"></div>
+  <script src="./src/model.js"></script>
+  <script src="./src/main.js"></script>
+</body>
+
 </html>
