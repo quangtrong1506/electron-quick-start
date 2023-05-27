@@ -1,0 +1,75 @@
+Initialize engine version: 5.6.7f1 (e80cc3114ac1)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) UHD Graphics (ID=0x9a78)
+    Vendor:   Intel
+    VRAM:     2111 MB
+    Driver:   30.0.101.3111
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.025 seconds
+Platform assembly: D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\create_app\QLTK_NRO\electron-quick-start\Dragonboy_vn_v225_Data\Managed\System.dll (this message is harmless)
+<RI> Initializing input.
+<RI> Input initialized.
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initialized touch support.
+UnloadTime: 1.316300 ms
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 2d80 -> priority: 1 
+  Thread -> id: 32c8 -> priority: 1 
+init Session_ME
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+init Session_ME
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Trying to create a material from string - this is no longer supported.
+ 
+(Filename:  Line: 1086)
+
+connecting...!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+host: 103.200.20.107
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+port: 14445
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+  at System.IO.BinaryReader.ReadByte () [0x00000] in <filename unknown>:0 
+  at System.IO.BinaryReader.ReadSByte () [0x00000] in <filename unknown>:0 
+  at Session_ME+MessageCollector.readMessage () [0x00000] in <filename unknown>:0 
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+connect fail
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+APP QUIT
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+APP QUIT
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+
+Unloading 174 unused Assets to reduce memory usage. Loaded Objects now: 690.
+Total: 0.584100 ms (FindLiveObjects: 0.030300 ms CreateObjectMapping: 0.032000 ms MarkObjects: 0.385000 ms  DeleteObjects: 0.135900 ms)
+
