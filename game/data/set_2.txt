@@ -1,0 +1,10 @@
+0,Áo vải 3 lỗ,0,Áo vải 3 lỗ,GiápSet Trái Đất 1$(5 món +100% sát thương Kaioken)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%,8
+1,Quần vải đen,6,Quần vải đen,HPSet Trái Đất 1$(5 món +100% sát thương Kaioken)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%,8
+2,Găng vải đen,21,Găng vải đen,Tấn côngSet Trái Đất 1$(5 món +100% sát thương Kaioken)# Sao Pha LêKhông thể giao dịch# Sao Pha LêBiến #% tấn công thành HPBiến #% tấn công thành KISức đánh%,8
+3,Giầy nhựa,27,Giầy nhựa,KISet Trái Đất 1$(5 món +100% sát thương Kaioken)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%,8
+4,Rada cấp 1,12,Rada cấp 1,Chí mạng%Set Trái Đất 1$(5 món +100% sát thương Kaioken)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%,8
+0,Áo vải 3 lỗ,0,Áo vải 3 lỗ,GiápSet Trái Đất 3$(5 món +100% sát thương Kamejoko)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%Ký gửi ngọc,8
+1,Quần vải đen,6,Quần vải đen,HPSet Trái Đất 3$(5 món +100% sát thương Kamejoko)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%Ký gửi ngọc,8
+2,Găng vải đen,21,Găng vải đen,Tấn côngSet Trái Đất 3$(5 món +100% sát thương Kamejoko)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%Ký gửi ngọc,8
+3,Giầy nhựa,27,Giầy nhựa,KISet Trái Đất 3$(5 món +100% sát thương Kamejoko)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%Ký gửi ngọc,8
+4,Rada cấp 1,12,Rada cấp 1,Chí mạng%Set Trái Đất 3$(5 món +100% sát thương Kamejoko)# Sao Pha LêKhông thể giao dịch# Sao Pha LêSức đánh%Ký gửi ngọc,8

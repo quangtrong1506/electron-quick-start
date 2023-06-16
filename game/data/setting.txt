@@ -1,0 +1,3 @@
+width:1400
+height:650
+speed:3

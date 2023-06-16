@@ -1,751 +1,415 @@
 window.onload = () => {
-    //Todo set tọa độ của phần tử khi load
-
-    // xóa sự kiện chuột phải mặc định
-    document.oncontextmenu = function rightClick(clickEvent) {
-        clickEvent.preventDefault();
-        return false;
-    };
-
-    //Todo set font
-    (function () {
-        var newStyle = document.createElement('style');
-        var styleInner = '';
-        Font.forEach((element) => {
-            styleInner += `@font-face {
-                font-family: '${element.name}';
-                src: url('src/fonts/${element.src}');
-            }\n`;
-        });
-        newStyle.innerHTML = styleInner;
-        document.body.appendChild(newStyle);
-    })();
-
-    //Todo set type background
-    (() => {
-        var type = document.getElementById('background').getAttribute('data-type') || 0;
-        document.querySelectorAll('.background-view')[type].style.display = 'block';
-        // if (type == 1) document.querySelector('.babckground-view video').play();
-    })();
-    (() => {
-        var a = document.querySelectorAll('.select-font');
-        a.forEach((element) => {
-            var options = '';
-            Font.forEach((element2) => {
-                options += `<option value="${element2.name}" style="font-family: ${element2.name};">${element2.name}</option>`;
-            });
-            element.innerHTML = options;
-        });
-    })();
-    var a = document.querySelectorAll('input[type="number"]');
-    for (let i = 0; i < a.length; i++) {
-        const element = a[i];
-        // element.addEventListener('chan', function (e) {
-        //     ;
-        // });
-        element.addEventListener('change', function x(e) {
-            changeValueNumberInput(e.target);
-            var value = e.target.value;
-            if (!value) e.target.value = 0;
-        });
-    }
-    function changeValueNumberInput(element) {
-        var min = parseInt(element.min) || 0;
-        var max = parseInt(element.max) || 0;
-        var value = parseInt(element.value) || 0;
-        if (value < min) {
-            element.value = min;
-            showMessage('Thông báo', 'Đã vượt qua giới hạn cho phép');
-        }
-        if (value > max) {
-            element.value = max;
-            showMessage('Thông báo', 'Đã vượt qua giới hạn cho phép');
-        }
-    }
-    //Todo loadn dữ liệu "Text" khi load xong
-    loadText();
-    var x = document.querySelector('.background');
-    x.addEventListener('mousemove', function () {
-        document.querySelector('.background').removeEventListener('mousedown', a);
-        mouseClickText('background');
-    });
-    x.addEventListener('mouseleave', function () {
-        document.querySelector('.background').removeEventListener('mousedown', a);
-    });
-    (() => {
-        document
-            .querySelector('div.list-skin > div > div.header > div.end span.new-skin')
-            .addEventListener('click', () => {
-                var ul = document.querySelector('div.list-skin > div > div.header > div.end > ul');
-                ul.style.display = 'block';
-                ul.addEventListener('mouseleave', () => {
-                    ul.style.display = 'none';
-                });
-                setTimeout(() => {
-                    ul.style.display = 'none';
-                }, 10000);
-            });
-    })();
+    loadTable();
+    if (localStorage.getItem('bg')) bgg = JSON.parse(localStorage.getItem('bg'));
+    setBGView();
 };
-
-var textDemo = new Text();
-
-//? set sự kiện kéo thả của 1 element
-function dragElement(elmnt) {
-    if (!elmnt.id) elmnt = document.getElementById(elmnt);
-    if (!elmnt) return;
-    var pos1 = 0,
-        pos2 = 0,
-        pos3 = 0,
-        pos4 = 0;
-    elmnt.onmousedown = dragMouseDown;
-
-    function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        //Todo get the mouse cursor position at startup:
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-
-        // y
-        elmnt.style.top = elmnt.offsetTop - pos2 + 'px';
-        // x
-        elmnt.style.left = elmnt.offsetLeft - pos1 + 'px';
-
-        var x = elmnt.style.left.toString().replace('px', ''),
-            y = elmnt.style.top.toString().replace('px', '');
-        var main = document.querySelector('body');
-        var w = main.clientWidth,
-            h = main.clientHeight;
-
-        if (x < -50) {
-            elmnt.style.left = '-50px';
-            x = -50;
-        }
-        if (y < -50) {
-            elmnt.style.top = '-50px';
-            y = -50;
-        }
-        if (x > w + 50 - elmnt.clientWidth) {
-            elmnt.style.left = w + 50 - elmnt.clientWidth + 'px';
-            x = w + 50 - elmnt.clientWidth;
-        }
-        if (y > h + 50 - elmnt.clientHeight) {
-            elmnt.style.top = h + 50 - elmnt.clientHeight + 'px';
-            y = h + 50 - elmnt.clientHeight;
-        }
-        setNewPosition(elmnt.id, x, y);
-    }
-
-    function closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
+let control = {
+    zoneid: -1,
+    mapid: -1,
+    skill: -1,
+    isKSBoss: false,
+    hpKSBOSS: 0,
+};
+function setBGView() {
+    document.getElementById('bg').style.backgroundImage =
+        'url(' + 'src/images/' + (bgg.type == 0 ? 'bg.png' : 'bg2.png') + ')';
+    document.getElementById('bg').style.opacity = bgg.opacity;
 }
-//Todo:
-function onchangeValueTab1() {
-    var text = document.querySelector('.tab .tab-1 .text-input').value;
-    var size = document.querySelector('.tab .tab-1 .size-input').value;
-    var font = document.querySelector('.tab .tab-1 .font-input').value;
-    document.querySelector('.tab .tab-1 #bold').checked
-        ? (textDemo.bold = 'bold')
-        : (textDemo.bold = 'initial');
-    document.querySelector('.tab .tab-1 #i').checked
-        ? (textDemo.italic = 'italic')
-        : (textDemo.italic = 'initial');
-
-    if (!text) document.querySelector('.tab .tab-1 .text-input').style.borderColor = 'red';
-    else document.querySelector('.tab .tab-1 .text-input').style.borderColor = 'black';
-
-    textDemo.fontSize = size;
-    textDemo.fontFamily = font;
-    textDemo.text = text;
-
-    setStyleTextDemo();
-}
-// Thay đổi tab trong chỉnh sửa văn bản
-function changeTab(n) {
-    var a = document.querySelectorAll('.tab > div');
-    a.forEach((element) => {
-        element.style.display = 'none';
-    });
-    if (a[n]) a[n].style.display = 'block';
-}
-// Thay đổi màu sắc ở đơn màu
-function changeColor() {
-    var color = document.querySelector('.tab .tab-2 .color-input').value;
-    textDemo.color = color;
-    setStyleTextDemo();
-}
-// lấy ngẫu nhiên màu ở đơn màu
-function randomColorBtn() {
-    var color = randomColor();
-    textDemo.color = color;
-    document.querySelector('.tab .tab-2 .color-input').value = color;
-
-    setStyleTextDemo();
-}
-
-// Thay đổi loại màu của chữ
-function changeTypeColor(event) {
-    var select = typeof event == 'number' ? event : event.target.value;
-    if (select == 0) {
-        document.querySelector('.tab-2 .single').style.display = 'inline-block';
-        document.querySelector('.tab-2 .multi').style.display = 'none';
-        textDemo.colorType = 0;
-        document
-            .querySelector('.content .content-3 .demo .demo__text')
-            .classList.remove('linear-gradient');
-    } else if (select == 1) {
-        document.querySelector('.tab-2 .single').style.display = 'none';
-        document.querySelector('.tab-2 .multi').style.display = 'block';
-        textDemo.colorType = 1;
-        var a = document.querySelectorAll('.colorx4 input');
-        a[0].value = textDemo.multiColor.color1;
-        a[1].value = textDemo.multiColor.color2;
-        a[2].value = textDemo.multiColor.color3;
-        a[3].value = textDemo.multiColor.color4;
-        document.querySelector('.multi-select').style.display = 'block';
-    } else if (select == 2) {
-        document.querySelector('.tab-2 .single').style.display = 'none';
-        document.querySelector('.tab-2 .multi').style.display = 'block';
-        textDemo.colorType = 2;
-        document.querySelector('.multi-select').style.display = 'none';
-    }
-    setStyleTextDemo();
-}
-// Nhận tất cả thay đổi kiểu cho chữ hiển thị
-function setStyleTextDemo() {
-    var bg =
-        textDemo.colorType == 1
-            ? `background: -webkit-linear-gradient(${textDemo.multiColor.pos}, ${textDemo.multiColor.color1}, ${textDemo.multiColor.color2}, ${textDemo.multiColor.color3}, ${textDemo.multiColor.color4});
-            -webkit-background-clip: text;`
-            : `background: ${textDemo.backgroundColor}`;
-    document.querySelector('.content .content-3 .demo .demo__text').setAttribute(
-        'style',
-        `font-size: ${textDemo.fontSize}px; font-weight: ${textDemo.bold};
-             font-style: ${textDemo.italic};font-family: ${textDemo.fontFamily};
-             color: ${textDemo.color}; ${bg}; padding:${textDemo.padding}px; border-radius: ${textDemo.borderRadius}px;
-             border: ${textDemo.border.width}px solid ${textDemo.border.color}`
-    );
-    if (textDemo.colorType == 0) {
-        document.querySelector('.content .content-3 .demo .demo__text').innerHTML = textDemo.text;
-    } else if (textDemo.colorType == 1) {
-        // linear color
-        document
-            .querySelector('.content .content-3 .demo .demo__text')
-            .classList.add('linear-gradient');
-
-        document.querySelector('.content .content-3 .demo .demo__text').innerHTML = textDemo.text;
-    } else if (textDemo.colorType == 2) {
-        var tmp = textDemo.text;
-        document
-            .querySelector('.content .content-3 .demo .demo__text')
-            .classList.remove('linear-gradient');
-        document.querySelector('.content .content-3 .demo .demo__text').innerHTML =
-            randomColorColorText(tmp);
-    }
-}
-
-//Todo: Thay đổi màu sắc ở dải màu
-function change4Color() {
-    textDemo.multiColor.color1 = document.querySelectorAll('.multi-select .colorx4 input')[0].value;
-    textDemo.multiColor.color2 = document.querySelectorAll('.multi-select .colorx4 input')[1].value;
-    textDemo.multiColor.color3 = document.querySelectorAll('.multi-select .colorx4 input')[2].value;
-    textDemo.multiColor.color4 = document.querySelectorAll('.multi-select .colorx4 input')[3].value;
-    setStyleTextDemo();
-}
-
-function changeDeg4Color() {
-    textDemo.multiColor.pos = document.querySelector('.multi-select select').value;
-    setStyleTextDemo();
-}
-function changePosition() {
-    var xElement = document.querySelector('.content .content-2 .tab-4 .x-input');
-    var yElement = document.querySelector('.content .content-2 .tab-4 .y-input');
-
-    var x = xElement.value < 50 ? 50 : xElement.value > 1300 ? 1300 : xElement.value;
-    var y = yElement.value < 50 ? 50 : yElement.value > 600 ? 600 : yElement.value;
-
-    textDemo.x = parseInt(x);
-    textDemo.y = parseInt(y);
-}
-function saveBtn2() {
-    var id = document.querySelector('.edit-container').id;
-    changePosition();
-    if (!textDemo.text) {
-        showMessage('Lỗi', 'Văn bản trống không thể lưu');
-        changeTab(0);
-        document.querySelector('.tab .tab-1 .text-input').focus();
-        return;
-    }
-    saveBtn(id);
-}
-function saveBtn(id) {
-    var arrText = JSON.parse(localStorage.getItem('Text')) || [];
-    for (let i = 0; i < arrText.length; i++) {
-        if (arrText[i].id == id) {
-            //Cập nhật nếu tồn tại
-            textDemo.time.updatedAt = getToday();
-            arrText[i] = textDemo;
-            showMessage('Thành công', 'Cập nhật dữ liệu thành công! Đã áp dụng');
-            localStorage.setItem('Text', JSON.stringify(arrText));
-            viewBlock(0);
-            loadText();
-            return;
-        }
-    }
-    arrText.push(textDemo);
-    showMessage('Thành công', 'Thêm dữ liệu mới thành công! Đã áp dụng');
-    localStorage.setItem('Text', JSON.stringify(arrText));
-
-    viewBlock(0);
-    loadText();
-}
-
-//Todo: Hiện thông báo
-function showMessage(title, message, type) {
-    var element = document.createElement('div');
-    element.className = 'message__container';
-    element.innerHTML = `
-    <div class="title">${title}</div>
-    <div class="mes">${message}</div>
-    <div class="close-btn">×</div>
-    <div class="bottom-time"></div>
-    `;
-    element.addEventListener('click', (e) => {
-        if (e.target.classList.contains('close-btn')) {
-            var a = setInterval((event) => {
-                element.style.opacity -= 0.1;
-                if (element.style.opacity < 0) {
-                    clearInterval(a);
-                    element.remove();
-                }
-            }, 100);
+function confirmDeleteAccount(id) {
+    Swal.fire({
+        title: 'Xác nhận xóa ?',
+        html: `Vui lòng xác nhận xóa tài khoản [<span style="color: #1B9C85">${
+            Accounts.getAccountById(id).username
+        }</span>]!`,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Xóa nó',
+        cancelButtonText: 'Hủy',
+        focusConfirm: false,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteAccount(id);
         }
     });
-    setTimeout((event) => {
-        var a = setInterval(() => {
-            element.style.opacity -= 0.1;
-            if (element.style.opacity < 0) {
-                clearInterval(a);
-                element.remove();
+}
+
+function loadTable() {
+    Accounts.load();
+    let tableBody = document.getElementById('table-body');
+    tableBody.innerHTML = '';
+    if (listAccount.length == 0)
+        tableBody.innerHTML = `<tr><td class="text-center" style="width:100%">Chưa có tài khoản nào <span class="add--btn" onclick="editAccountPaint()">thêm mới</span></td></tr>`;
+    listAccount.forEach((account, index) => {
+        tableBody.innerHTML += `<tr>
+            <th class="stt" scope="row">${index + 1}</th>
+            <td class="ten" width="150">${account.username}</td>
+            <td class="text-center sv">${account.server}</td>
+            <td class="gt">${account.note}</td>
+            <td class="text-center  table-group-button d-flex justify-content-between" width="80">
+            <div>
+                <i class="bi bi-play-circle run--btn" title="Chạy" onclick="runAccount('${
+                    account.id
+                }')"></i>
+            </div>
+            <div>
+                <i class="bi bi-pencil-square edit--btn" title="Sửa" onclick="editAccount('${
+                    account.id
+                }')"></i>
+            </div>
+            <div>
+                <i class="bi bi-trash del--btn" title="Xóa" onclick="confirmDeleteAccount('${
+                    account.id
+                }')"></i>
+            </div>
+        </td>
+        </tr>`;
+    });
+    if (listAccount.length > 0) document.getElementById('tb-add').style.display = 'inline-block';
+    else document.getElementById('tb-add').style.display = 'none';
+}
+function deleteAccount(username) {
+    if (Accounts.deleteAccountById(username))
+        Swal.fire('Đã xóa!', 'Bạn đã xóa tài khoản thành công.', 'success');
+    else Swal.fire('Lỗi!', 'Đã sảy ra lỗi gì đó.', 'error');
+    loadTable();
+}
+function runAccount(id) {
+    let account = Accounts.getAccountById(id);
+    window.electronAPI.runApp(account);
+    thongBaoKhiAnChay(account.username);
+}
+
+function thongBaoKhiAnChay(username) {
+    Swal.fire({
+        title: `Đang khởi động tài khoản [<span style="color: #1B9C85">${username}</span>]`,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+}
+function editAccount(id) {
+    editAccountPaint(id);
+}
+function editAccountPaint(id) {
+    let title = 'Thêm tài khoản mới',
+        username = '',
+        password = '',
+        note = '',
+        serverText = '';
+    let max = localStorage.getItem('server-max') ? parseInt(localStorage.getItem('server-max')) : 1;
+    if (id) {
+        let account = Accounts.getAccountById(id);
+        if (account) {
+            username = account.username;
+            password = account.password;
+            server = account.server;
+            note = account.note;
+            for (let i = 0; i < max; i++) {
+                let check = account.server == i + 1 ? 'selected' : '';
+                serverText += `<option value="${i + 1}" ${check}>Server ${i + 1}</option>`;
             }
-        }, 100);
-    }, 3500);
-    document.querySelector('.message').appendChild(element);
-}
-
-function loadText() {
-    var a = JSON.parse(localStorage.getItem('Text')) || [];
-    document.querySelector('.text-container').innerHTML = '';
-    for (let i = 0; i < a.length; i++) {
-        const element = a[i];
-        if (element.status == 1) {
-            var newE = document.createElement('div');
-            newE.classList = 'text ab';
-            newE.id = element.id;
-            var bg =
-                element.colorType == 1
-                    ? `background: -webkit-linear-gradient(${element.multiColor.pos}, ${element.multiColor.color1}, ${element.multiColor.color2}, ${element.multiColor.color3}, ${element.multiColor.color4});
-            -webkit-background-clip: text;`
-                    : `background: ${element.backgroundColor}`;
-
-            newE.setAttribute(
-                'style',
-                `font-size: ${element.fontSize}px; font-weight: ${element.bold};font-style: ${element.italic};font-family: ${element.fontFamily};color: ${element.color}; ${bg}; top: ${element.y}px;left: ${element.x}px;
-                padding:${element.padding}px; border-radius: ${element.borderRadius}px;
-                border: ${element.border.width}px solid ${element.border.color}
-                `
-            );
-            newE.setAttribute('data-type-color', element.colorType);
-            if (element.colorType == 0) {
-                newE.innerHTML = element.text;
-            } else if (element.colorType == 1) {
-                // linear color
-                newE.classList.add('linear-gradient');
-                newE.innerHTML = element.text;
-                newE.setAttribute(
-                    'data-color',
-                    element.multiColor.color1 +
-                        ',' +
-                        element.multiColor.color2 +
-                        ',' +
-                        element.multiColor.color3 +
-                        ',' +
-                        element.multiColor.color4
-                );
-                newE.setAttribute('data-pos', element.multiColor.pos);
-            } else if (element.colorType == 2) {
-                var tmp = element.text;
-                newE.innerHTML = randomColorColorText(tmp);
-            }
-            mouseClickText(newE);
-            dragElement(newE);
-            document.querySelector('.text-container').appendChild(newE);
         }
-    }
-}
-
-function xoaBtn(id) {
-    id = id || document.querySelector('.edit-container').id;
-    x = confirm('Vui lòng xác nhận xóa');
-    if (!x) return;
-    var arrText = JSON.parse(localStorage.getItem('Text')) || [];
-    for (let i = 0; i < arrText.length; i++) {
-        const element = arrText[i];
-        if (element.id == id) {
-            arrText.splice(i, 1);
-            // a.splice
-            localStorage.setItem('Text', JSON.stringify(arrText));
-            showMessage('Thành công', 'Đã xóa, Cập nhật dữ liệu thành công! Đã áp dụng');
-            viewBlock(0);
-            loadText();
-            return;
-        }
-    }
-    showMessage('Hủy', 'Bạn đã hủy thao tác!');
-    viewBlock(0);
-    loadText();
-}
-function xoaBtn2(id) {
-    var arrText = JSON.parse(localStorage.getItem('Text')) || [];
-    for (let i = 0; i < arrText.length; i++) {
-        const element = arrText[i];
-        if (element.id == id) {
-            var x = confirm('Xác nhận xóa: ' + element.text);
-            if (!x) return;
-            arrText.splice(i, 1);
-            localStorage.setItem('Text', JSON.stringify(arrText));
-            getListText();
-            showMessage('Thành công', 'Đã xóa, Cập nhật dữ liệu thành công!');
-        }
-    }
-}
-
-function setNewPosition(id, x, y) {
-    var a = JSON.parse(localStorage.getItem('Text')) || [];
-    a.forEach((element) => {
-        if (element.id == id) {
-            element.x = x;
-            element.y = y;
-            localStorage.setItem('Text', JSON.stringify(a));
-        }
-    });
-}
-
-function remoteEditText(id) {
-    viewBlock(1);
-    var a = JSON.parse(localStorage.getItem('Text')) || [];
-    var element;
-    a.forEach((x) => {
-        if (x.id == id) {
-            element = x;
-        }
-    });
-    if (element) {
-        var text = element.text || 'Chưa nhập gì',
-            color = element.color || '#ffffff',
-            fontFamily = element.fontFamily.replace(/\"/g, ''),
-            fontSize = element.fontSize,
-            backgroundColor = element.backgroundColor || 'rgba(255,255,255,0)',
-            status = element.status,
-            bold = element.bold,
-            padding = element.padding;
-        (italic = element.fontStyle),
-            (x = element.x),
-            (y = element.y),
-            (colorType = element.colorType),
-            (borderRadius = element.borderRadius),
-            (border = {
-                width: element.border.width,
-                color: element.border.color,
-            });
-        multiColor = {};
-        if (element.colorType == 0) changeTypeColor(0);
-        else if (element.colorType == 1) {
-            multiColor.color1 = element.multiColor.color1;
-            multiColor.color2 = element.multiColor.color2;
-            multiColor.color3 = element.multiColor.color3;
-            multiColor.color4 = element.multiColor.color4;
-            multiColor.pos = element.multiColor.pos;
-            document.querySelector('.tab .tab-2 select').value = 1;
-            document.querySelector('.tab .tab-2 .multi select').value = 1;
-            document.querySelector('.tab .tab-2 .multi .multi-select select').value =
-                multiColor.pos;
-            changeTypeColor(1);
-        } else if (element.colorType == 2) {
-            document.querySelector('.tab .tab-2 select').value = 1;
-
-            document.querySelector('.tab .tab-2 .multi select').value = 2;
-            changeTypeColor(2);
-        }
-
-        var options = {
-            text: text,
-            borderRadius: borderRadius,
-            color: color,
-            fontFamily: fontFamily,
-            fontSize: fontSize,
-            backgroundColor: backgroundColor,
-            x: x,
-            y: y,
-            status: status,
-            bold: bold,
-            italic: italic,
-            colorType: colorType,
-            multiColor: multiColor,
-            padding: padding,
-            border: border,
-            time: {
-                createdAt: element.time.createdAt || getToday(),
-                updatedAt: element.time.updatedAt || getToday(),
-            },
-        };
-        textDemo = new Text(id, options);
-    } else textDemo = new Text();
-
-    //Todo set Value // dữ liệu ở chỗ chỉnh sửa
-    document.querySelector('.main .edit-container').id = textDemo.id;
-    document.getElementById('text-input').value = textDemo.text;
-    document.getElementById('size-input').value = parseInt(textDemo.fontSize);
-    if (textDemo.bold == 'bold') document.getElementById('bold').selected;
-    if (textDemo.italic == 'italic') document.getElementById('i').selected;
-    document.querySelector('.content .content-2 .tab-4 .x-input').value = textDemo.x;
-    document.querySelector('.content .content-2 .tab-4 .y-input').value = textDemo.y;
-    document.querySelector('.content .content-2 .color-input').value = textDemo.color;
-
-    document.querySelector('.content .content-2 .font-input').value = textDemo.fontFamily;
-    document.querySelector('.content .content-2 .tab-3 .padding-input').value = parseInt(
-        textDemo.padding
-    );
-    document.querySelector('.content .content-2 .tab-3 .radius-input').value = parseInt(
-        textDemo.borderRadius
-    );
-    document.querySelector('.tab .tab-3 .border-width-input').value = textDemo.border.width;
-    document.querySelector('.tab .tab-3 .border-color-input').value = textDemo.border.color;
-
-    callFunctionEdits();
-}
-function callFunctionEdits() {
-    changeBorderColorText();
-    changeBorderWidthText();
-    getColorOfBackgroundPadding();
-    changeColorBackgroundText();
-    changePaddingBackgroundText();
-    changeBorderRadiusBackgroundText();
-    onchangeValueTab1();
-    setStyleTextDemo();
-    changeTab(0);
-}
-//Todo ẩn hoặc hiển ở menu chỉnh sửa
-function statusBtn(e) {
-    var element = e.target;
-    if (textDemo.status == 1) {
-        element.value = 'Hiện thị';
-        textDemo.status = 0;
     } else {
-        element.value = 'Ẩn';
-        textDemo.status = 1;
-    }
-}
-//Todo xóa "Text" ở màn hình chính
-function deleteTextBtn(id) {
-    var a = JSON.parse(localStorage.getItem('Text')) || [];
-    for (let i = 0; i < a.length; i++) {
-        if (a[i].id == id) {
-            var x = confirm('Xác nhận xóa : ' + a[i].text);
-            if (x) {
-                a.splice(i, 1);
-                showMessage('Thành công', 'Đã xác nhận xóa, Load lại dữ liệu');
-            }
+        for (let i = 0; i < max; i++) {
+            serverText += `<option value="${i + 1}">Server ${i + 1}</option>`;
         }
     }
-    localStorage.setItem('Text', JSON.stringify(a));
-    loadText();
-}
-//Todo ẩn "Text" ở màn hình chính
-function statusBtn2(id) {
-    var a = JSON.parse(localStorage.getItem('Text')) || [];
-    for (let i = 0; i < a.length; i++) {
-        if (a[i].id == id) {
-            a[i].status = 0;
-        }
-    }
-    localStorage.setItem('Text', JSON.stringify(a));
-    loadText();
-}
-
-function getListText() {
-    viewBlock(2);
-    var array = JSON.parse(localStorage.getItem('Text')) || [];
-    var container = document.querySelector('.list-skin .container');
-    container.innerHTML = '';
-    for (let i = 0; i < array.length; i++) {
-        const element = array[i];
-
-        var eye =
-            element.status == 1
-                ? `<i class="fa-sharp fa-solid fa-eye"></i>`
-                : `<i class="fa-sharp fa-solid fa-eye-slash" ></i>`;
-        var eyeText = element.status == 0 ? `Ấn để hiện` : `Ấn để ẩn`;
-        var elmnt = document.createElement('div');
-        elmnt.classList = 'element';
-        elmnt.innerHTML = `
-         <div class="start">
-             <div class="name" onclick="remoteEditText('${element.id}')">${element.text}</div>
-             <div class="time">
-                 <div>
-                     <div class="created-at">
-                         <span>Ngày tạo: </span>
-                         <span>${element.time.createdAt}</span>
-                     </div>
-                     <div class="updated-at">
-                         <span>Ngày sửa: </span>
-                         <span>${element.time.updatedAt}</span>
-                     </div>
-                 </div>
-             </div>
-         </div>
-         <div class="end">
-             <div class="group-btn">
-                 <div class="tooltip" data-tooltip="Chỉnh sửa">
-                     <i class="fa-solid fa-pen-to-square" onclick="remoteEditText('${element.id}')"></i>
-                 </div>
-                 <div class="tooltip" data-tooltip="${eyeText}" onclick="hideText2('${element.id}')">${eye}</div>
-                 <div class="tooltip" data-tooltip="Xóa" onclick="xoaBtn2('${element.id}')">
-                     <i class="fa-solid fa-trash"></i>
-                 </div>
-             </div>
-         </div>
-     </div>`;
-        container.appendChild(elmnt);
-    }
-}
-
-function viewBlock(n) {
-    var arrBlock = [];
-    var textContent = document.querySelector('.text-container'); // 0
-    var editContainer = document.querySelector('.edit-container'); //1
-    var listSkin = document.querySelector('.list-skin'); //2
-    arrBlock.push(textContent);
-    arrBlock.push(editContainer);
-    arrBlock.push(listSkin);
-
-    arrBlock.forEach((element) => {
-        element.style.display = 'none';
-    });
-    arrBlock[n].style.display = 'block';
-    if (n == 0) {
-        mouseClickText('background');
-        loadText();
-    }
-}
-
-function hideText2(id) {
-    var a = JSON.parse(localStorage.getItem('Text')) || [];
-    for (let i = 0; i < a.length; i++) {
-        if (a[i].id == id) {
-            if (a[i].status == 1) {
-                a[i].status = 0;
-                localStorage.setItem('Text', JSON.stringify(a));
-                showMessage('Thành công', 'Đã ẩn khỏi màn hình');
+    Swal.fire({
+        title: title,
+        html: `<div class="zxcvbnm">
+                    <div class="mb-1">
+                        <label for="username" class="form-label">Tài khoản</label>
+                        <input type="text" class="form-control" id="username" placeholder="" value="${username}">
+                    </div>
+                    <div class="mb-1">
+                        <label for="password" class="form-label">Mật khẩu</label>
+                        <input type="text" class="form-control" id="password" placeholder="" value="${password}">
+                    </div>
+                    <div class="mb-1">
+                        <label for="server" class="form-label">Server</label>
+                        <select id="server" class="form-select" aria-label="Vui lòng chọn server">
+                            ${serverText}
+                        </select>
+                    </div>
+                    <div class="mb-1">
+                        <label for="note" class="form-label">Ghi chú</label>
+                        <textarea class="form-control" id="note" rows="3" >${note}</textarea>
+                    </div>
+                </div>`,
+        showCancelButton: true,
+        showCloseButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Lưu lại',
+        cancelButtonText: 'Hủy',
+        focusConfirm: false,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            let server = document.getElementById('server').value;
+            let note = document.getElementById('note').value;
+            if (id && Accounts.editAccount(id, username, password, server, note)) {
+                Swal.fire('Thành công!', 'Chỉnh sửa thông tin tài khoản thành công.', 'success');
+                loadTable();
+            } else if (Accounts.add(username, password, server, note)) {
+                Accounts.save();
+                Swal.fire('Thành công!', 'Bạn đã thêm tài khoản thành công.', 'success');
+                loadTable();
             } else {
-                a[i].status = 1;
-                localStorage.setItem('Text', JSON.stringify(a));
-                showMessage('Thành công', 'Đã hiển thị trên màn hình');
+                let text = 'Chưa nhập đầy đủ thông tin';
+                if (username && password && server)
+                    text = `Tài khoản [<span style="color: #1B9C85">${username}</span>] đã tồn tại`;
+                Swal.fire('Lỗi!', text);
             }
-            getListText();
         }
+    });
+    document.getElementById('username').focus();
+}
+
+function writeMapToView(id) {
+    document.getElementById('text-map').innerHTML = getMapName(id);
+}
+function ConvertHPBossToText(n) {
+    let text = n;
+    if (n >= 0) {
+        control.hpKSBOSS = parseInt(n);
+    }
+    if (n > 1000) text = (n / 1000).toFixed(2) + ' nghìn';
+    document.getElementById('hp-text').innerText = text;
+    if (n > 1000 * 1000) text = (n / (1000 * 1000)).toFixed(2) + ' triệu';
+    document.getElementById('hp-text').innerText = text;
+    if (n > 1000 * 1000 * 1000) text = (n / (1000 * 1000 * 1000)).toFixed(2) + ' tỷ';
+    document.getElementById('hp-text').innerText = text;
+}
+
+function VaoKhu(id) {
+    if (id) {
+        control.skill = -1;
+        control.mapid = -1;
+        Swal.fire('Vào khu', `Đang vào khu [ <span style="color: #1B9C85">${id}</span> ]`);
+        control.zoneid = parseInt(id);
+        sendControl();
+    } else Swal.fire('Lỗi!', 'Vui lòng nhập số khu muốn vào');
+}
+function DenMap(id) {
+    if (id || id == 0) {
+        control.skill = -1;
+        control.zoneid = -1;
+        if (getMapName(id) == 'Map không tồn tại')
+            return Swal.fire('Lỗi!', 'Map không tồn tại hoặc chưa được cập nhật');
+        Swal.fire(
+            'Chạy đến map',
+            `Đang chạy đến map [ <span style="color: #1B9C85">${getMapName(id)}</span> ]`
+        );
+        control.mapid = parseInt(id);
+        sendControl();
+    } else Swal.fire('Lỗi!', 'Vui lòng nhập id map muốn đến');
+}
+
+function WriteHPBoss(hp) {
+    if (hp) {
+        control.mapid = -1;
+        control.zoneid = -1;
+        control.skill = -1;
+        Swal.fire(
+            'Thành công',
+            `Lưu hp boss thành công [ <span style="color: #1B9C85">${hp}</span> ]`
+        );
+        sendControl();
+    } else Swal.fire('Lỗi!', 'Vui lòng nhập hp boss');
+}
+function setTextAutoChat(text) {
+    Swal.fire(
+        'Thành công',
+        `Đã set text auto chat thành [ <span style="color: #1B9C85">${text}</span> ]`
+    );
+    window.electronAPI.sendTextAutoChat(text);
+}
+function setTextCTG(text) {
+    Swal.fire(
+        'Thành công',
+        `Đã set text auto chat thế giới thành [ <span style="color: #1B9C85">${text}</span> ]`
+    );
+    window.electronAPI.sendTextCTG(text);
+}
+
+function WriteWidth(n) {
+    let w = document.getElementById('width').value;
+    let h = document.getElementById('height').value;
+    let o = {
+        width: w,
+        height: h,
+        speed: 3,
+    };
+    window.electronAPI.changeSite(o);
+}
+function WriteHeight(n) {
+    let w = document.getElementById('width').value;
+    let h = document.getElementById('height').value;
+    let o = {
+        width: w,
+        height: h,
+        speed: 3,
+    };
+    window.electronAPI.changeSite(o);
+}
+function setIsKSBoss(value) {
+    control.mapid = -1;
+    control.zoneid = -1;
+    control.skill = -1;
+    console.log('value: ' + value);
+    if (value) Swal.fire('Bật KS boss');
+    else Swal.fire('Tắt KS boss');
+    control.isKSBoss = value;
+    sendControl();
+}
+function PaintSetting() {
+    let pathImg = bgg.type == 1 ? 'bg2.png' : 'bg.png';
+    let ip = localStorage.getItem('ip-game')
+        ? localStorage.getItem('ip-game')
+        : 'Nro Nato:103.200.20.107:14445:0,0,0';
+
+    let version = localStorage.getItem('version-game')
+        ? localStorage.getItem('version-game')
+        : 'Dragonboy_vn_v225';
+
+    let max = localStorage.getItem('server-max') ? parseInt(localStorage.getItem('server-max')) : 1;
+    Swal.fire({
+        title: 'Cài đặt',
+        html: `<div class="zxcvbnm">
+                    <div class="mb-1">
+                        <label class="form-label">Hình nền</label>
+                        <label style="position:relative" for="chonhinhnen"  title="Ấn để thay hình nền">
+                            <img id="output" src="src/images/${pathImg}" width="100%">
+                            <span class="span-an">Ấn để chọn hình nền mới</span>
+                        </label>
+                        <input id="chonhinhnen" type="file" style="display:none" accept=".png,.jpeg,.jpg" >
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label">Độ trong suốt nền: <span id="pt"></span></label>
+                        <input id="chondotrongsuot" class="form-range"  type="range" oninput="changePT(this.value)" min="0" max="100">
+                    </div>
+                    <div class="mb-1">
+                        <label for="password" class="form-label">IP game</label>
+                        <input type="text" class="form-control" id="ip-game" placeholder="" value="${ip}">
+                    </div>
+                    <div class="mb-1">
+                        <label for="server-max" class="form-label">Số lượng server</label>
+                        <input type="number" class="form-control" id="server-max" placeholder="" min="1" value="${max}">
+                    </div>
+                    <div class="mb-1">
+                        <label for="version-game" class="form-label">Phiên bản game</label>
+                        <input type="text" class="form-control" id="version-game" placeholder=""  value="${version}">
+                    </div>
+                </div>`,
+        showCancelButton: true,
+        showCloseButton: true,
+        showDenyButton: true,
+        confirmButtonColor: '#3085d6',
+        denyButtonColor: '#4942E4',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Lưu lại',
+        cancelButtonText: 'Hủy',
+        denyButtonText: 'Mặc định',
+        focusConfirm: false,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.setItem('bg', JSON.stringify(bgg));
+            if (document.getElementById('chonhinhnen').value)
+                window.electronAPI.uploadImage(document.getElementById('output').src);
+            window.electronAPI.saveIPGame(document.getElementById('ip-game').value);
+            window.electronAPI.saveVersionGame(version);
+            localStorage.setItem('ip-game', document.getElementById('ip-game').value);
+            localStorage.setItem('version-game', document.getElementById('version-game').value);
+            localStorage.setItem('server-max', document.getElementById('server-max').value);
+        } else if (result.isDenied) {
+            bgg.type = 0;
+            bgg.opacity = 0.1;
+            localStorage.setItem('bg', JSON.stringify(bgg));
+            document.getElementById('bg').style.opacity = bgg.opacity;
+            document.getElementById('bg').style.backgroundImage =
+                'url(src/images/' + (bgg.type == 0 ? 'bg.png' : 'bg2.png') + ')';
+            localStorage.removeItem('ip-game');
+            localStorage.removeItem('version-game');
+            localStorage.removeItem('server-max');
+            window.electronAPI.saveIPGame(ip);
+            window.electronAPI.saveVersionGame(version);
+            xoaMangBoss();
+        } else {
+            document.getElementById('chonhinhnen').value = '';
+            let bgx = JSON.parse(localStorage.getItem('bg'));
+            if (bgx) bgg = bgx;
+            document.getElementById('bg').style.opacity = bgg.opacity;
+            document.getElementById('bg').style.backgroundImage =
+                'url(src/images/' + (bgg.type == 0 ? 'bg.png' : 'bg2.png') + ')';
+        }
+    });
+    document.getElementById('chonhinhnen').onchange = (evt) => {
+        const [file] = document.getElementById('chonhinhnen').files;
+        const fr = new FileReader();
+        if (file) {
+            fr.addEventListener('load', function (evt) {
+                let path = evt.target.result;
+                document.getElementById('output').src = path;
+                bgg.type = 1;
+                document.getElementById('bg').style.backgroundImage = 'url(' + path + ')';
+            });
+            fr.readAsDataURL(file);
+        }
+    };
+    document.getElementById('pt').innerHTML = bgg.opacity * 100 + '%';
+    document.getElementById('chondotrongsuot').value = bgg.opacity * 100;
+    document.querySelector('.swal2-close').addEventListener('click', cancelST);
+    document.querySelector('.swal2-container').addEventListener('click', (e) => {
+        if (
+            e.target.classList.contains('swal2-container') &&
+            e.target.classList.contains('swal2-center') &&
+            e.target.classList.contains('swal2-backdrop-hide')
+        ) {
+            cancelST();
+        }
+    });
+    function cancelST() {
+        document.getElementById('chonhinhnen').value = '';
+        let bgx = JSON.parse(localStorage.getItem('bg'));
+        if (bgx) bgg = bgx;
+        else
+            bgg = {
+                type: 0,
+                type: 0.1,
+            };
+        document.getElementById('bg').style.opacity = bgg.opacity;
+        document.getElementById('bg').style.backgroundImage =
+            'url(src/images/' + (bgg.type == 0 ? 'bg.png' : 'bg2.png') + ')';
     }
 }
-function changeColorBackgroundText() {
-    var color = document.querySelector('.tab .tab-3 .color-input').value;
-    color = color.replace('#', '');
-    var rgb = hexToRgb(color);
-    var a = document.querySelector('.tab .tab-3 .opacity-input').value;
-    var alfa = (a / 100).toFixed(2);
-
-    var rgba = `rgba(${rgb.r},${rgb.g},${rgb.b},${alfa})`;
-    textDemo.backgroundColor = rgba;
-    setStyleTextDemo();
+let bgg = {
+    type: 0,
+    opacity: 0.1,
+};
+function changePT(value) {
+    let opacity = value / 100;
+    bgg.opacity = opacity;
+    document.getElementById('pt').innerHTML = value + '%';
+    document.getElementById('bg').style.opacity = opacity;
 }
 
-function randomColorBackgroundText() {
-    var color = randomColor();
-    document.querySelector('.tab .tab-3 .color-input').value = color;
-    changeColorBackgroundText();
-}
-function changeOpacityBackgroundText() {
-    changeColorBackgroundText();
-    var a = document.querySelector('.tab .tab-3 .opacity-input').value;
-    var alfa = ((a / 100) * 100).toFixed(0);
-    document.querySelector('.tab .tab-3 .present-output').innerHTML = alfa + '%';
+function useSkill(params) {
+    control.mapid = -1;
+    control.zoneid = -1;
+    control.skill = parseInt(params.innerText);
+    sendControl();
 }
 
-function changePaddingBackgroundText() {
-    var padding = document.querySelector('.tab .tab-3 .padding-input').value;
-    textDemo.padding = padding;
-    document.querySelector('.tab .tab-3 .present-output-2').innerHTML = padding + 'px';
-    setStyleTextDemo();
-}
-function changeBorderRadiusBackgroundText() {
-    var radius = document.querySelector('.tab .tab-3 .radius-input').value;
-    textDemo.borderRadius = radius;
-    document.querySelector('.tab .tab-3 .present-output-3').innerHTML = radius + 'px';
-    setStyleTextDemo();
+function sendControl() {
+    console.log(control);
+    window.electronAPI.sendControl(control);
 }
 
-function getColorOfBackgroundPadding() {
-    var bg = textDemo.backgroundColor;
-    var tmp = bg.replace(/(\(|\)|rgba|\s)/g, '').split(',');
-    var color = rgbToHex(tmp[0], tmp[1], tmp[2]);
-    var alfa = tmp[3];
-    //opacity-input
-    document.querySelector('.tab .tab-3 .opacity-input').value = alfa * 100;
-    document.querySelector('.tab .tab-3 .present-output').innerHTML = alfa * 100 + '%';
-    document.querySelector('.tab .tab-3 .color-input').value = color;
-}
-function hideTextAll() {
-    var a = JSON.parse(localStorage.getItem('Text')) || [];
-    for (let i = 0; i < a.length; i++) a[i].status = 0;
-    localStorage.setItem('Text', JSON.stringify(a));
-    loadText();
-}
-function displayTextAll() {
-    var a = JSON.parse(localStorage.getItem('Text')) || [];
-    for (let i = 0; i < a.length; i++) a[i].status = 1;
-    localStorage.setItem('Text', JSON.stringify(a));
-    loadText();
-}
-
-function changeBorderColorText() {
-    textDemo.border.color = document.querySelector('.tab .tab-3 .border-color-input').value;
-    setStyleTextDemo();
-}
-function changeBorderColorTextRandomBtn() {
-    var color = randomColor();
-    textDemo.border.color = color;
-    document.querySelector('.tab .tab-3 .border-color-input').value = color;
-    setStyleTextDemo();
-}
-function changeBorderWidthText() {
-    textDemo.border.width = document.querySelector('.tab .tab-3 .border-width-input').value;
-    document.querySelector('.tab .tab-3 .present-output-4').innerHTML =
-        textDemo.border.width + 'px';
-    setStyleTextDemo();
+function xoaMangBoss() {
+    window.electronAPI.xoaMangBoss();
 }
